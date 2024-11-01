@@ -48,14 +48,15 @@ def normalize_RMS(after_fft_data):
 '''
 def main():
   # 任意のpathを入力
-    folder_path_head = ("/content/drive/MyDrive/wav_for_pc")
-    folder_path_foot = ("dann15/粘土")  #csvファイルの保存時に用います
+    folder_path_head = (input("フォルダーのpathを入力:"))
+    folder_path_foot = (input("ファイルパスの末尾2つ")  #csvファイルの保存時に用います 例)pp15/なし　
     file_name = folder_path_foot.replace('/','_')
     folder_path = os.path.join(folder_path_head, folder_path_foot)
     wavefiles = glob.glob(folder_path+"/*")
 '''
 単純に
 folder_path = ("任意のpath")
+file_name = folder_path.replace('/','_')
 wavefiles = glob.glob(folder_path+"/*")　
   でも良い
 '''
@@ -87,6 +88,16 @@ wavefiles = glob.glob(folder_path+"/*")　
         aim_index = np.where((r_freq <20000)&(r_freq>0))[0][-1] #0Hzから20000Hzの周波数のインデックスを求める
     else:
       print("None")
+
+    output_folder_path = input("任意のフォルダーパス:")
+    output_file_mean = f'/worn_fft_amplitude_result_mean_{file_name}.csv'
+    #「f"任意のフォルダーのpath/worn_fft_amplitude_result_mean_{file_name}.csv"」のようにしてください
+    with open(output_file_mean, mode='w') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Frequency (Hz)', 'Amplitude'])
+        for f, a_rms in zip(freq[:aim_index],average_fft_mean): #0Hzから20000Hzのデータを保存
+            writer.writerow([f, a_mean])
+
 #任意のファイル名で設定してよい
 '''
     output_file_rms = f'/content/drive/MyDrive/音声/dann10/worn_fft_amplitude_result_rms_{file_name}.csv'
@@ -96,11 +107,4 @@ wavefiles = glob.glob(folder_path+"/*")　
         for f, a_rms in zip(freq[:aim_index],average_fft_rms):  #0Hzから20000Hzのデータを保存
             writer.writerow([f, a_rms])
 '''
-
-    output_file_mean = f'/content/drive/MyDrive/音声/dann15/worn_fft_amplitude_result_mean_{file_name}.csv'
-    with open(output_file_mean, mode='w') as file:
-        writer = csv.writer(file)
-        writer.writerow(['Frequency (Hz)', 'Amplitude'])
-        for f, a_rms in zip(freq[:aim_index],average_fft_mean): #0Hzから20000Hzのデータを保存
-            writer.writerow([f, a_rms])
 main()
