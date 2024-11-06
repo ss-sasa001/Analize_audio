@@ -97,9 +97,8 @@ wavefiles = glob.glob(folder_path+"/*")　
         writer.writerow(['Frequency (Hz)', 'Amplitude'])
         for f, a_rms in zip(freq[:aim_index],average_fft_mean): #0Hzから20000Hzのデータを保存
             writer.writerow([f, a_mean])
-
 #任意のファイル名で設定してよい
-'''
+'''以下例
     output_file_rms = f'/content/drive/MyDrive/音声/dann10/worn_fft_amplitude_result_rms_{file_name}.csv'
     with open(output_file_rms, mode='w') as file:
         writer = csv.writer(file)
